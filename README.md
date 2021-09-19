@@ -4,7 +4,7 @@ Repo of the Cloud Computing Foundations course
 # Build Multiple Types of Websites
 
 ### 1. Static Website with S3
-An Amazon object storage.
+*An Amazon object storage.*
 
 a. In Cloud 9 create an `index.html` file with the template that you want to show:
 
@@ -40,7 +40,7 @@ c. Download the `index.html` and insert as an Object to the Bucket.
 d. In `Properties - Static website hosting`, you can see your Bucket website endpoint, That's your URL hosting.
 
 ### 2. Website with AWS Lambda
-A serverless technology.
+*A serverless technology.*
 
 a. In Cloud9, with the AWS Toolkit enabled, Create a Lambda function `Creatr Lambda SAM Application`.
   * Select a SAM Application Runtime - `python3.7`.
