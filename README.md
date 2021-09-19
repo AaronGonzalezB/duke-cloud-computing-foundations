@@ -82,5 +82,66 @@ d. To deploy the website:
   * The `API endpoint` it's your URL website.
 
 
-3. EC2 - Virtual Machine
-4. AWS Beanstalk - PaaS
+### 3. EC2 - Virtual Machine:
+
+In a Cloud9 environment, we will create a .pem file that allows to connect via SSH with the VM and with the EC2 Spot Console, install a web service in the browser.
+
+a. Setup a PEM key.
+  * In the `EC2 - Key pairs - Create key pair` - assign a name an a `pem` File format.
+  * A .pem file is downloaded, upload this file in the Clou9 environment, out of the folders already created.
+
+b. Assign port labels:
+  * Go to the `EC2 - Network and Security - Create a security group` - assign a name, in this case `hellospotwebservice`.
+  * Add rule - setup an Inbound rule with Port range 22 and Source `0.0.0.0/0`
+  * Add another rule with Port range 80 and Source `0.0.0.0/0`
+
+c. Launch a new Instance:
+  * Got to `EC2 - Spot Requests - Request Spot Instance - Big data workloads (optional) - AMI: Amazon Linux 2` - assign a `Key pair name` based on the Key pair created.
+  * Assign the `security group` created
+  * Launch the instance.
+  * When the instance is running, assign a name, in this case `spot-web-service` then Connect the instance.
+
+d. Connect to instance:
+  * Inside the instance - SSH client - Launch the chmod command in the Cloud9 console: `chmod 400 hellowebservice.pem`
+  * In Cloud9 console, connect with `ssh -i "hellowebservice.pem" ec2-user@ec2-3-89-86-148.compute-1.amazonaws.com`
+
+e. Setup the VM:
+  * Install and start the http server with:
+    ```
+    sudo yum update -y
+    sudo yum install -y httpd
+    sudo systemctl start httpd
+    ```
+  
+f. Test the web service: 
+  * Inside the Instance - EC2 Instace Connect - Instance ID - Open public IPv4 address.
+  * Allow the EC2 user to become part of the Apache group - `sudo usermod -a -G apache ec2-user`
+  * Assign a new permission level - `sudo chown -R ec2-user:apache /var/www`
+  * add group write permissions: 
+  ```
+  sudo chmod 2775 /var/www && find /var/www -type d -exec sudo chmod 2775 {} \;
+  find /var/www -type f -exec sudo chmod 0664 {} \;
+  ```
+  * go to the web service and add content on it:
+  ```
+  cd /var/www
+  cd html
+  touch index.html
+  vim index.html
+        <html>
+            <p>Test the web service</p>
+        </html>
+  ```
+  * Restart the web service and refresh the browser: `sudo systemctl restart httpd`
+ 
+ That's it!
+
+### 5. AWS Beanstalk - PaaS
+To setup an environment we have to install the Ealist Beanstalk Command Line Interface (EB CLI) via the latest github repo from Amazon: https://github.com/aws/aws-elastic-beanstalk-cli-setup
+
+Once we install, the Load Balancer give us the entire ecosystem to deploy our Flask application.
+
+
+
+
+
